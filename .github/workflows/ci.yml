@@ -1,0 +1,64 @@
+name: CI (Schema & Manifest Validation)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate JSON Schema & Manifest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate Schema and Manifest Integrity
+        run: |
+          node -e '
+            const fs = require("fs");
+            console.log("Parsing cli.manifest.schema.json...");
+            const schema = JSON.parse(fs.readFileSync("cli.manifest.schema.json", "utf8"));
+            if (!schema.title || !schema.properties) {
+              throw new Error("Invalid schema: missing title or properties");
+            }
+            console.log("✓ Schema is valid JSON Schema structure:", schema.title);
+
+            console.log("Parsing cli.manifest.json...");
+            const manifest = JSON.parse(fs.readFileSync("cli.manifest.json", "utf8"));
+            if (!manifest.version || !manifest.commands) {
+              throw new Error("Invalid manifest: missing version or commands");
+            }
+            const cmdCount = Object.keys(manifest.commands).length;
+            console.log("✓ Manifest valid. Version: " + manifest.version + ", Commands: " + cmdCount);
+          '
+
+  notify:
+    name: Notify Telegram
+    needs: [validate]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Send Telegram Notification
+        uses: tuquet/bot@main
+        with:
+          bot-token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          chat-id: ${{ secrets.TELEGRAM_CHAT_ID }}
+          status: ${{ needs.validate.result }}
