@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tuquet.github.io/schema/cli.manifest.schema.json",
+  "$id": "https://tuquet.com/schema/cli.manifest.schema.json",
   "title": "TuquetCliManifest",
   "description": "Declarative JSON Schema definition for Tuquet Ecosystem CLI commands, pillars, and capabilities (VS Code Contributes pattern).",
   "type": "object",

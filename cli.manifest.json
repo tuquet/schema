@@ -1,9 +1,9 @@
 {
-  "$schema": "https://tuquet.github.io/schema/cli.manifest.schema.json",
+  "$schema": "https://tuquet.com/schema/cli.manifest.schema.json",
   "name": "specter",
   "version": "1.0.0",
   "description": "Specter - Autonomous Browser Automation & Distributed Mesh Runtime",
-  "homepage": "https://tuquet.github.io",
+  "homepage": "https://tuquet.com",
   "repository": "https://github.com/tuquet/cli",
   "brand": {
     "productName": "Specter",
@@ -22,7 +22,8 @@
     "bridge",
     "faker",
     "runner",
-    "cloud"
+    "cloud",
+    "inbox"
   ],
   "commands": [
     {
@@ -64,7 +65,8 @@
             "browser",
             "cloud",
             "system",
-            "faker"
+            "faker",
+            "inbox"
           ]
         }
       ],
@@ -716,35 +718,47 @@
       ],
       "pillar": "browser",
       "title": "Launch Browser In Profile",
-      "description": "Launch an antidetect browser profile with direct CDP DevTools bridge.",
+      "description": "Launch an antidetect browser profile (zero-port stealth & detached by default).",
       "arguments": [
         {
-          "name": "profile",
+          "name": "target",
           "type": "string",
           "required": false,
-          "default": "default",
-          "description": "Target profile ID or name (default: 'default')."
+          "description": "Target profile ID or target URL if single argument is a URL."
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "required": false,
+          "description": "Optional target URL to navigate to when profile is specified."
         }
       ],
       "options": [
         {
+          "name": "cdp",
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Chrome DevTools Protocol (CDP) for automation."
+        },
+        {
           "name": "port",
           "short": "p",
           "type": "integer",
-          "default": 9222,
-          "description": "Chrome DevTools Protocol (CDP) port for Playwright / Puppeteer automation."
+          "default": 0,
+          "description": "Chrome DevTools Protocol (CDP) port (defaults to 0 for stealth; when --cdp is set without port, picks next free from 9222)."
+        },
+        {
+          "name": "foreground",
+          "short": "f",
+          "type": "boolean",
+          "default": false,
+          "description": "Run in foreground and keep terminal attached (default is detached background)."
         },
         {
           "name": "headless",
           "type": "boolean",
           "default": false,
           "description": "Run browser in headless mode."
-        },
-        {
-          "name": "url",
-          "short": "u",
-          "type": "string",
-          "description": "Initial URL to navigate to."
         },
         {
           "name": "detach",
@@ -762,14 +776,20 @@
           "name": "mode",
           "short": "m",
           "type": "string",
-          "default": "driver",
-          "description": "Automation mode: 'driver' or 'extension'."
+          "default": "extension",
+          "description": "Automation mode: 'extension' (Zero-port ultra-stealth default) or 'driver' (CDP DevTools bridge)."
         },
         {
           "name": "no_cdp",
           "type": "boolean",
           "default": false,
-          "description": "Shortcut for --mode extension (disables remote debugging port completely)."
+          "description": "Shortcut for zero-port extension stealth mode."
+        },
+        {
+          "name": "force",
+          "type": "boolean",
+          "default": false,
+          "description": "Force launch even if profile is already running."
         },
         {
           "name": "skip_proxy_check",
@@ -1081,6 +1101,25 @@
       ]
     },
     {
+      "id": "specter.browser.ps",
+      "route": [
+        "browser",
+        "ps"
+      ],
+      "pillar": "browser",
+      "title": "List Running Browser Profiles",
+      "description": "List active running antidetect browser profiles.",
+      "options": [
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": false,
+          "description": "Output in JSON format."
+        }
+      ]
+    },
+    {
       "id": "specter.browser.search",
       "route": [
         "browser",
@@ -1114,6 +1153,40 @@
       }
     },
     {
+      "id": "specter.browser.stop",
+      "route": [
+        "browser",
+        "stop"
+      ],
+      "pillar": "browser",
+      "title": "Stop Browser Profile",
+      "description": "Terminate running browser profile process tree cleanly.",
+      "arguments": [
+        {
+          "name": "profile",
+          "type": "string",
+          "required": false,
+          "description": "Target profile ID or name."
+        }
+      ],
+      "options": [
+        {
+          "name": "all",
+          "short": "a",
+          "type": "boolean",
+          "default": false,
+          "description": "Stop all running browser profiles."
+        },
+        {
+          "name": "force",
+          "short": "f",
+          "type": "boolean",
+          "default": false,
+          "description": "Force immediate termination."
+        }
+      ]
+    },
+    {
       "id": "specter.browser.use",
       "route": [
         "browser",
@@ -1140,13 +1213,15 @@
       "pillar": "browser",
       "title": "Live Stealth Verification Demo",
       "description": "Live visual verification & stealth presentation (Cloudflare Turnstile, Bézier mouse, smooth scroll).",
-      "options": [
+      "arguments": [
         {
           "name": "url",
-          "short": "u",
           "type": "string",
+          "required": false,
           "description": "Target URL to test (defaults to Cloudflare Turnstile challenge test)."
-        },
+        }
+      ],
+      "options": [
         {
           "name": "headless",
           "type": "boolean",
@@ -1603,6 +1678,285 @@
         "tool_name": "specter_cloud_whoami",
         "exported": true
       }
+    },
+    {
+      "id": "specter.inbox.otp",
+      "route": [
+        "inbox",
+        "otp"
+      ],
+      "pillar": "inbox",
+      "title": "Fetch or Intercept OTP",
+      "description": "Retrieve latest OTP code for a recipient with optional wait polling and auto-consumption.",
+      "arguments": [
+        {
+          "name": "recipient",
+          "type": "string",
+          "required": true,
+          "description": "Target email recipient (e.g. acc1@domain.com)"
+        }
+      ],
+      "options": [
+        {
+          "name": "wait",
+          "short": "w",
+          "type": "boolean",
+          "default": false,
+          "description": "Wait and poll until OTP arrives"
+        },
+        {
+          "name": "timeout",
+          "short": "t",
+          "type": "integer",
+          "default": 60,
+          "description": "Maximum wait time in seconds (default: 60)"
+        },
+        {
+          "name": "raw",
+          "short": "r",
+          "type": "boolean",
+          "default": false,
+          "description": "Output raw OTP code only (ideal for shell pipes & automation)"
+        },
+        {
+          "name": "no-consume",
+          "type": "boolean",
+          "default": false,
+          "description": "Do not mark OTP as consumed"
+        },
+        {
+          "name": "copy",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-copy intercepted OTP code to system clipboard"
+        }
+      ],
+      "mcp": {
+        "tool_name": "specter_inbox_otp",
+        "exported": true
+      }
+    },
+    {
+      "id": "specter.inbox.link",
+      "route": [
+        "inbox",
+        "link"
+      ],
+      "pillar": "inbox",
+      "title": "Fetch Verification or Magic Link",
+      "description": "Extract latest verification, password reset, or magic link from recipient inbox.",
+      "arguments": [
+        {
+          "name": "recipient",
+          "type": "string",
+          "required": true,
+          "description": "Target email recipient (e.g. acc1@domain.com)"
+        }
+      ],
+      "options": [
+        {
+          "name": "link-type",
+          "short": "l",
+          "type": "string",
+          "description": "Optional link type filter (verification, reset_password, magic_link)"
+        },
+        {
+          "name": "open",
+          "short": "o",
+          "type": "boolean",
+          "default": false,
+          "description": "Open link automatically in default browser"
+        },
+        {
+          "name": "raw",
+          "short": "r",
+          "type": "boolean",
+          "default": false,
+          "description": "Output raw URL only"
+        }
+      ]
+    },
+    {
+      "id": "specter.inbox.list",
+      "route": [
+        "inbox",
+        "list"
+      ],
+      "pillar": "inbox",
+      "title": "List Inbound Emails and OTPs",
+      "description": "List recent caught emails and extracted OTPs in local storage.",
+      "options": [
+        {
+          "name": "recipient",
+          "short": "r",
+          "type": "string",
+          "description": "Filter by recipient email address"
+        },
+        {
+          "name": "limit",
+          "short": "l",
+          "type": "integer",
+          "default": 20,
+          "description": "Maximum records to display (default: 20)"
+        }
+      ]
+    },
+    {
+      "id": "specter.inbox.start",
+      "route": [
+        "inbox",
+        "start"
+      ],
+      "pillar": "inbox",
+      "title": "Start Catch-All Webhook Daemon",
+      "description": "Start the local Axum webhook listener daemon to receive Cloudflare email routing events.",
+      "options": [
+        {
+          "name": "port",
+          "short": "p",
+          "type": "integer",
+          "description": "Custom listening port (default from inbox.json: 9123)"
+        },
+        {
+          "name": "host",
+          "type": "string",
+          "description": "Custom listening host (default: 127.0.0.1)"
+        },
+        {
+          "name": "foreground",
+          "short": "f",
+          "type": "boolean",
+          "default": false,
+          "description": "Run in foreground instead of background daemon"
+        }
+      ]
+    },
+    {
+      "id": "specter.inbox.stop",
+      "route": [
+        "inbox",
+        "stop"
+      ],
+      "pillar": "inbox",
+      "title": "Stop Inbox Daemon",
+      "description": "Stop running inbox webhook listener daemon process."
+    },
+    {
+      "id": "specter.inbox.status",
+      "route": [
+        "inbox",
+        "status"
+      ],
+      "pillar": "inbox",
+      "title": "Inbox Subsystem Status",
+      "description": "Inspect daemon PID, port, database statistics, and cloud synchronization status.",
+      "mcp": {
+        "tool_name": "specter_inbox_status",
+        "exported": true
+      }
+    },
+    {
+      "id": "specter.inbox.test",
+      "route": [
+        "inbox",
+        "test"
+      ],
+      "pillar": "inbox",
+      "title": "One-Click Inbox Acceptance Test",
+      "description": "Execute one-click acceptance test verifying local storage, cloud discovery, and OTP interception.",
+      "options": [
+        {
+          "name": "simulate",
+          "short": "s",
+          "type": "boolean",
+          "default": false,
+          "description": "Force simulated local loop test even when online"
+        },
+        {
+          "name": "remote",
+          "short": "r",
+          "type": "boolean",
+          "default": false,
+          "description": "Verify connectivity to remote cloud endpoint"
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": false,
+          "description": "Output results in JSON format"
+        }
+      ]
+    },
+    {
+      "id": "specter.inbox.setup-worker",
+      "route": [
+        "inbox",
+        "setup-worker"
+      ],
+      "pillar": "inbox",
+      "title": "Generate Cloudflare Email Worker",
+      "description": "Export ready-to-deploy Cloudflare Email Routing Worker script for 1-click catch-all.",
+      "options": [
+        {
+          "name": "output",
+          "short": "o",
+          "type": "string",
+          "description": "Write generated script to target file path"
+        },
+        {
+          "name": "secret",
+          "short": "s",
+          "type": "string",
+          "description": "Custom webhook secret token"
+        }
+      ]
+    },
+    {
+      "id": "specter.inbox.sync",
+      "route": [
+        "inbox",
+        "sync"
+      ],
+      "pillar": "inbox",
+      "title": "Sync Inbound Emails from Cloud",
+      "description": "Synchronize latest incoming emails and OTPs from Supabase Cloud.",
+      "options": [
+        {
+          "name": "limit",
+          "short": "l",
+          "type": "integer",
+          "default": 50,
+          "description": "Number of recent emails to pull from cloud (default: 50)"
+        }
+      ]
+    },
+    {
+      "id": "specter.inbox.config",
+      "route": [
+        "inbox",
+        "config"
+      ],
+      "pillar": "inbox",
+      "title": "Manage Inbox Configuration",
+      "description": "Display, inspect, or edit the canonical inbox configuration file (~/.specter/inbox/inbox.json).",
+      "options": [
+        {
+          "name": "edit",
+          "short": "e",
+          "type": "boolean",
+          "default": false,
+          "description": "Open ~/.specter/inbox/inbox.json in your default editor"
+        },
+        {
+          "name": "show",
+          "short": "s",
+          "type": "boolean",
+          "default": false,
+          "description": "Display raw configuration file path or content"
+        }
+      ]
     }
   ]
 }
