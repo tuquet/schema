@@ -98,10 +98,36 @@
       "options": [
         {
           "name": "fix",
-          "short": "f",
           "type": "boolean",
           "default": false,
           "description": "Attempt automatic remediation of missing dependencies where supported."
+        },
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -149,11 +175,31 @@
           "description": "Filter commands by microservice pillar domain."
         },
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
           "name": "json",
           "short": "j",
           "type": "boolean",
-          "default": false,
-          "description": "Output catalog in raw JSON format."
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -220,11 +266,24 @@
       "description": "Show unified status overview across Cloud, Runner, Bridge, and Antidetect Browser.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
           "name": "card",
           "short": "c",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual dashboard cards."
+          "description": "Display rich visual dashboard cards (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
         },
         {
           "name": "json",
@@ -247,6 +306,44 @@
       "pillar": "system",
       "title": "Upgrade Specter CLI",
       "description": "Check and atomically upgrade Specter CLI binary in-place to latest release."
+    },
+    {
+      "id": "specter.whoami",
+      "route": [
+        "whoami"
+      ],
+      "pillar": "system",
+      "title": "Show Cloud Identity & Enrollment",
+      "description": "Show current Specter Cloud identity, enrolled device GUID, operator account, and tenant ID.",
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
+      ]
     },
     {
       "id": "specter.login",
@@ -308,6 +405,33 @@
           "name": "api-key",
           "type": "string",
           "description": "Custom Supabase API publishable or anon key."
+        },
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -331,10 +455,31 @@
       "description": "List all accessible multi-tenant workspaces for the authenticated operator.",
       "options": [
         {
-          "name": "json",
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
           "type": "boolean",
           "default": false,
-          "description": "Output list in raw JSON format."
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output list in raw JSON format (default)."
         }
       ]
     },
@@ -354,6 +499,35 @@
           "required": true,
           "description": "Target workspace slug or UUID."
         }
+      ],
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
       ]
     },
     {
@@ -364,7 +538,36 @@
       ],
       "pillar": "system",
       "title": "Display Current Workspace",
-      "description": "Display current active workspace details and membership role."
+      "description": "Display current active workspace details and membership role.",
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
+      ]
     },
     {
       "id": "specter.automa.inspect",
@@ -585,11 +788,24 @@
           "description": "Filter workflows by keyword."
         },
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
           "name": "table",
-          "short": "t",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual table formatted for terminal viewing."
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
         },
         {
           "name": "json",
@@ -949,11 +1165,24 @@
       "description": "List all locally installed Chromium runtimes on this workstation.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
           "name": "table",
-          "short": "t",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual table formatted for terminal viewing."
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
         },
         {
           "name": "json",
@@ -1148,6 +1377,35 @@
           "required": true,
           "description": "Profile identifier or display name."
         }
+      ],
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
       ]
     },
     {
@@ -1159,7 +1417,36 @@
       ],
       "pillar": "browser",
       "title": "List Browser Profiles",
-      "description": "List all local browser profiles in ~/.specter/browser/profiles/."
+      "description": "List all local browser profiles in ~/.specter/browser/profiles/.",
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
+      ]
     },
     {
       "id": "specter.browser.profile.pack",
@@ -1266,11 +1553,31 @@
       "description": "List active running antidetect browser profiles.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
           "name": "json",
           "short": "j",
           "type": "boolean",
-          "default": false,
-          "description": "Output in JSON format."
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -1304,18 +1611,31 @@
       "description": "Display installation status, executable path, and disk usage of dedicated browser.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
           "name": "card",
           "short": "c",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual card."
+          "description": "Display rich visual card view (shortcut for -f card)."
         },
         {
           "name": "json",
           "short": "j",
           "type": "boolean",
           "default": true,
-          "description": "Output status in raw JSON format (default)."
+          "description": "Output results in raw JSON format (default)."
         }
       ],
       "mcp": {
@@ -1504,18 +1824,31 @@
       "description": "Show health check dashboard of all configured VPSs, ports, and proxy workloads.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
           "name": "card",
           "short": "c",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual card and network topology table."
+          "description": "Display rich visual card view (shortcut for -f card)."
         },
         {
           "name": "json",
           "short": "j",
           "type": "boolean",
           "default": true,
-          "description": "Output status in raw JSON format (default)."
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -1585,6 +1918,33 @@
           "short": "g",
           "type": "string",
           "description": "Filter by gender."
+        },
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -1806,11 +2166,31 @@
       "description": "Inspect local runner daemon status and health check endpoint.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
           "name": "json",
           "short": "j",
           "type": "boolean",
-          "default": false,
-          "description": "Output status in raw JSON format."
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -1936,6 +2316,33 @@
           "name": "api-key",
           "type": "string",
           "description": "Custom Supabase API publishable or anon key."
+        },
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -1960,18 +2367,31 @@
       "description": "Show current Specter Cloud identity, enrolled device GUID, and tenant ID.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
           "name": "card",
           "short": "c",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual card."
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
         },
         {
           "name": "json",
           "short": "j",
           "type": "boolean",
           "default": true,
-          "description": "Output status in raw JSON format (default)."
+          "description": "Output results in raw JSON format (default)."
         }
       ],
       "mcp": {
@@ -1991,10 +2411,31 @@
       "description": "List all accessible multi-tenant workspaces for the authenticated operator.",
       "options": [
         {
-          "name": "json",
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
           "type": "boolean",
           "default": false,
-          "description": "Output list in raw JSON format."
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output list in raw JSON format (default)."
         }
       ]
     },
@@ -2015,6 +2456,35 @@
           "required": true,
           "description": "Target workspace slug or UUID."
         }
+      ],
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
       ]
     },
     {
@@ -2026,7 +2496,36 @@
       ],
       "pillar": "cloud",
       "title": "Display Current Workspace",
-      "description": "Display current active workspace details and membership role."
+      "description": "Display current active workspace details and membership role.",
+      "options": [
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
+      ]
     },
     {
       "id": "specter.inbox.otp",
@@ -2075,10 +2574,36 @@
         },
         {
           "name": "copy",
-          "short": "c",
           "type": "boolean",
           "default": false,
           "description": "Auto-copy intercepted OTP code to system clipboard"
+        },
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ],
       "mcp": {
@@ -2123,6 +2648,33 @@
           "type": "boolean",
           "default": false,
           "description": "Output raw URL only"
+        },
+        {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -2150,11 +2702,24 @@
           "description": "Maximum records to display (default: 20)"
         },
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
           "name": "table",
-          "short": "t",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual table formatted for terminal viewing."
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card view (shortcut for -f card)."
         },
         {
           "name": "json",
@@ -2216,18 +2781,31 @@
       "description": "Inspect daemon PID, port, database statistics, and cloud synchronization status.",
       "options": [
         {
+          "name": "format",
+          "short": "f",
+          "type": "string",
+          "default": "json",
+          "description": "Output format: json, table, or card (default: json)."
+        },
+        {
+          "name": "table",
+          "type": "boolean",
+          "default": false,
+          "description": "Display formatted terminal table view (shortcut for -f table)."
+        },
+        {
           "name": "card",
           "short": "c",
           "type": "boolean",
           "default": false,
-          "description": "Display rich visual card and metrics."
+          "description": "Display rich visual card view (shortcut for -f card)."
         },
         {
           "name": "json",
           "short": "j",
           "type": "boolean",
           "default": true,
-          "description": "Output status in raw JSON format (default)."
+          "description": "Output results in raw JSON format (default)."
         }
       ],
       "mcp": {

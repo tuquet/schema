@@ -25,7 +25,7 @@
     "cloud_sync": {
       "type": "boolean",
       "default": true,
-      "description": "Enable real-time cloud synchronization with Tuquet Supabase Cloud hub"
+      "description": "Enable real-time cloud synchronization with Specter Cloud hub"
     },
     "supabase_url": {
       "type": "string",
