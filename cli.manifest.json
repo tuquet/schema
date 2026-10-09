@@ -220,11 +220,18 @@
       "description": "Show unified status overview across Cloud, Runner, Bridge, and Antidetect Browser.",
       "options": [
         {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual dashboard cards."
+        },
+        {
           "name": "json",
           "short": "j",
           "type": "boolean",
-          "default": false,
-          "description": "Output status in raw JSON format for machine parsing and automation pipelines."
+          "default": true,
+          "description": "Output status in raw JSON format (default)."
         }
       ],
       "mcp": {
@@ -240,6 +247,124 @@
       "pillar": "system",
       "title": "Upgrade Specter CLI",
       "description": "Check and atomically upgrade Specter CLI binary in-place to latest release."
+    },
+    {
+      "id": "specter.login",
+      "route": [
+        "login"
+      ],
+      "pillar": "system",
+      "title": "Operator Authentication Login",
+      "description": "Authenticate operator account, resolve multi-tenant workspace, and pair workstation.",
+      "options": [
+        {
+          "name": "url",
+          "short": "u",
+          "type": "string",
+          "description": "Specter Cloud endpoint URL."
+        },
+        {
+          "name": "email",
+          "short": "e",
+          "type": "string",
+          "description": "Operator account email for Supabase GoTrue authentication."
+        },
+        {
+          "name": "password",
+          "short": "p",
+          "type": "string",
+          "description": "Operator account password."
+        },
+        {
+          "name": "otp",
+          "type": "boolean",
+          "default": false,
+          "description": "Request and authenticate via One-Time Passcode (OTP)."
+        },
+        {
+          "name": "code",
+          "short": "c",
+          "type": "string",
+          "description": "Pre-supplied 6-digit One-Time Passcode (OTP)."
+        },
+        {
+          "name": "token",
+          "short": "t",
+          "type": "string",
+          "description": "JWT access token or organization enrollment token."
+        },
+        {
+          "name": "tenant",
+          "type": "string",
+          "description": "Pre-select target workspace by slug or ID."
+        },
+        {
+          "name": "name",
+          "short": "n",
+          "type": "string",
+          "description": "Custom workstation name (defaults to machine hostname)."
+        },
+        {
+          "name": "api-key",
+          "type": "string",
+          "description": "Custom Supabase API publishable or anon key."
+        }
+      ]
+    },
+    {
+      "id": "specter.logout",
+      "route": [
+        "logout"
+      ],
+      "pillar": "system",
+      "title": "Operator Logout",
+      "description": "Log out operator account, clear session credentials, and disconnect workstation."
+    },
+    {
+      "id": "specter.tenant.list",
+      "route": [
+        "tenant",
+        "list"
+      ],
+      "pillar": "system",
+      "title": "List Accessible Workspaces",
+      "description": "List all accessible multi-tenant workspaces for the authenticated operator.",
+      "options": [
+        {
+          "name": "json",
+          "type": "boolean",
+          "default": false,
+          "description": "Output list in raw JSON format."
+        }
+      ]
+    },
+    {
+      "id": "specter.tenant.switch",
+      "route": [
+        "tenant",
+        "switch"
+      ],
+      "pillar": "system",
+      "title": "Switch Active Workspace",
+      "description": "Switch active workspace context for this workstation and re-pair device.",
+      "arguments": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": true,
+          "description": "Target workspace slug or UUID."
+        }
+      ]
+    },
+    {
+      "id": "specter.tenant.current",
+      "route": [
+        "tenant",
+        "current"
+      ],
+      "pillar": "system",
+      "title": "Display Current Workspace",
+      "description": "Display current active workspace details and membership role."
     },
     {
       "id": "specter.automa.inspect",
@@ -458,6 +583,20 @@
           "short": "s",
           "type": "string",
           "description": "Filter workflows by keyword."
+        },
+        {
+          "name": "table",
+          "short": "t",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual table formatted for terminal viewing."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ],
       "mcp": {
@@ -807,7 +946,23 @@
       ],
       "pillar": "browser",
       "title": "List Installed Browser Engines",
-      "description": "List all locally installed Chromium runtimes on this workstation."
+      "description": "List all locally installed Chromium runtimes on this workstation.",
+      "options": [
+        {
+          "name": "table",
+          "short": "t",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual table formatted for terminal viewing."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
+        }
+      ]
     },
     {
       "id": "specter.browser.path",
@@ -1147,6 +1302,22 @@
       "pillar": "browser",
       "title": "Browser Engine Status",
       "description": "Display installation status, executable path, and disk usage of dedicated browser.",
+      "options": [
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output status in raw JSON format (default)."
+        }
+      ],
       "mcp": {
         "tool_name": "specter_browser_status",
         "exported": true
@@ -1330,7 +1501,23 @@
       ],
       "pillar": "bridge",
       "title": "Bridge Mesh Status",
-      "description": "Show health check dashboard of all configured VPSs, ports, and proxy workloads."
+      "description": "Show health check dashboard of all configured VPSs, ports, and proxy workloads.",
+      "options": [
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card and network topology table."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output status in raw JSON format (default)."
+        }
+      ]
     },
     {
       "id": "specter.bridge.stop",
@@ -1432,21 +1619,41 @@
         {
           "name": "nat",
           "type": "string",
-          "default": "VN",
-          "description": "Filter by nationality (VN, US, JP)."
+          "default": "US",
+          "description": "Filter by nationality (US, VN, JP)."
         },
         {
           "name": "format",
           "short": "f",
           "type": "choice",
-          "default": "table",
-          "description": "Output format: table, card, json, or csv.",
+          "default": "json",
+          "description": "Output format: json, table, card, or csv.",
           "choices": [
+            "json",
             "table",
             "card",
-            "json",
             "csv"
           ]
+        },
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual identity card (shortcut for -f card)."
+        },
+        {
+          "name": "table",
+          "short": "t",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rounded ANSI tabular overview (shortcut for -f table)."
+        },
+        {
+          "name": "csv",
+          "type": "boolean",
+          "default": false,
+          "description": "Export to RFC-compliant CSV (shortcut for -f csv)."
         },
         {
           "name": "output",
@@ -1459,6 +1666,49 @@
         "tool_name": "specter_faker_generate",
         "exported": true
       }
+    },
+    {
+      "id": "specter.faker.nationalities",
+      "route": [
+        "faker",
+        "nationalities"
+      ],
+      "pillar": "faker",
+      "title": "List Supported Nationalities & Schemas",
+      "description": "List supported nationalities, ID schemas, and provider metadata.",
+      "options": [
+        {
+          "name": "table",
+          "short": "t",
+          "type": "boolean",
+          "default": false,
+          "description": "Display catalog in formatted ANSI table."
+        }
+      ]
+    },
+    {
+      "id": "specter.faker.id",
+      "route": [
+        "faker",
+        "id"
+      ],
+      "pillar": "faker",
+      "title": "Generate Isolated National ID",
+      "description": "Generate isolated national ID with mathematically valid checksum (SSN, CCCD, My Number).",
+      "options": [
+        {
+          "name": "nat",
+          "type": "string",
+          "description": "Filter by nationality: US, VN, JP."
+        },
+        {
+          "name": "raw",
+          "short": "r",
+          "type": "boolean",
+          "default": false,
+          "description": "Output raw ID string only without JSON wrapper."
+        }
+      ]
     },
     {
       "id": "specter.runner.logs",
@@ -1633,7 +1883,7 @@
       ],
       "pillar": "cloud",
       "title": "Cloud Authentication Login",
-      "description": "Authenticate and enroll this workstation with Specter Cloud.",
+      "description": "Authenticate operator identity, resolve multi-tenant workspace, and pair workstation with Specter Cloud.",
       "options": [
         {
           "name": "url",
@@ -1642,16 +1892,50 @@
           "description": "Specter Cloud endpoint URL (e.g. https://cloud.specter.dev)."
         },
         {
+          "name": "email",
+          "short": "e",
+          "type": "string",
+          "description": "Operator account email for Supabase GoTrue authentication."
+        },
+        {
+          "name": "password",
+          "short": "p",
+          "type": "string",
+          "description": "Operator account password."
+        },
+        {
+          "name": "otp",
+          "type": "boolean",
+          "default": false,
+          "description": "Request and authenticate via One-Time Passcode (OTP)."
+        },
+        {
+          "name": "code",
+          "short": "c",
+          "type": "string",
+          "description": "Pre-supplied 6-digit One-Time Passcode (OTP)."
+        },
+        {
           "name": "token",
           "short": "t",
           "type": "string",
-          "description": "Organization / Tenant enrollment token."
+          "description": "Organization / Tenant enrollment token or JWT."
+        },
+        {
+          "name": "tenant",
+          "type": "string",
+          "description": "Pre-select target workspace by slug or ID."
         },
         {
           "name": "name",
           "short": "n",
           "type": "string",
           "description": "Custom workstation name (defaults to machine hostname)."
+        },
+        {
+          "name": "api-key",
+          "type": "string",
+          "description": "Custom Supabase API publishable or anon key."
         }
       ]
     },
@@ -1674,10 +1958,75 @@
       "pillar": "cloud",
       "title": "Display Cloud Enrollment Identity",
       "description": "Show current Specter Cloud identity, enrolled device GUID, and tenant ID.",
+      "options": [
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output status in raw JSON format (default)."
+        }
+      ],
       "mcp": {
         "tool_name": "specter_cloud_whoami",
         "exported": true
       }
+    },
+    {
+      "id": "specter.cloud.tenant.list",
+      "route": [
+        "cloud",
+        "tenant",
+        "list"
+      ],
+      "pillar": "cloud",
+      "title": "List Accessible Workspaces",
+      "description": "List all accessible multi-tenant workspaces for the authenticated operator.",
+      "options": [
+        {
+          "name": "json",
+          "type": "boolean",
+          "default": false,
+          "description": "Output list in raw JSON format."
+        }
+      ]
+    },
+    {
+      "id": "specter.cloud.tenant.switch",
+      "route": [
+        "cloud",
+        "tenant",
+        "switch"
+      ],
+      "pillar": "cloud",
+      "title": "Switch Active Workspace",
+      "description": "Switch active workspace context for this workstation and re-pair device.",
+      "arguments": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": true,
+          "description": "Target workspace slug or UUID."
+        }
+      ]
+    },
+    {
+      "id": "specter.cloud.tenant.current",
+      "route": [
+        "cloud",
+        "tenant",
+        "current"
+      ],
+      "pillar": "cloud",
+      "title": "Display Current Workspace",
+      "description": "Display current active workspace details and membership role."
     },
     {
       "id": "specter.inbox.otp",
@@ -1799,6 +2148,20 @@
           "type": "integer",
           "default": 20,
           "description": "Maximum records to display (default: 20)"
+        },
+        {
+          "name": "table",
+          "short": "t",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual table formatted for terminal viewing."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output results in raw JSON format (default)."
         }
       ]
     },
@@ -1851,6 +2214,22 @@
       "pillar": "inbox",
       "title": "Inbox Subsystem Status",
       "description": "Inspect daemon PID, port, database statistics, and cloud synchronization status.",
+      "options": [
+        {
+          "name": "card",
+          "short": "c",
+          "type": "boolean",
+          "default": false,
+          "description": "Display rich visual card and metrics."
+        },
+        {
+          "name": "json",
+          "short": "j",
+          "type": "boolean",
+          "default": true,
+          "description": "Output status in raw JSON format (default)."
+        }
+      ],
       "mcp": {
         "tool_name": "specter_inbox_status",
         "exported": true
